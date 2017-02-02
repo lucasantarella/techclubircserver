@@ -1,5 +1,38 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+    .container
+        .row
+            .col-lg-12
+                h1 People
+                .table-responsive
+                    table#table.table.table-striped.table-hover
+                        thead
+                            tr
+                                td Name
+                                td Special
+                                td Extra-Special
+                        tbody#tbody
+                script(src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous")
+                script(type="application/javascript").
+                    $(document).ready(function () {
+                        var table = $("#table"),
+                            tbody = table.find("#tbody");
+
+                        $.ajax({
+                            type: "get",
+                            url: "/api/people",
+                            success: function (response) {
+                                var people = response.people;
+                                people.forEach(function (person) {
+                                    console.log(person);
+                                    tbody.append(
+                                        "<tr>" +
+                                        "<td>" + person.name + "</td>" +
+                                        "<td>" + person.special + "</td>" +
+                                        "<td>" + person.extra_special + "</td>" +
+                                        "</tr>");
+                                })
+                            }
+                        });
+                    });
